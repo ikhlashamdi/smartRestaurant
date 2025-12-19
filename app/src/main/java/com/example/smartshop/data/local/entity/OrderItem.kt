@@ -1,4 +1,4 @@
-package com.example.smartshop.data
+package com.example.smartshop.data.local.entity
 
 data class OrderItem(
     val productName: String = "",

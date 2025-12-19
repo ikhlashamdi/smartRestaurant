@@ -1,7 +1,8 @@
-package com.example.smartshop.auth
+package com.example.smartshop.ViewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.smartshop.auth.AuthUiState
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -17,7 +18,6 @@ class AuthViewModel : ViewModel() {
 
     private val auth: FirebaseAuth = Firebase.auth
 
-    // ✅ Vérifier si l'utilisateur est déjà connecté au démarrage
     init {
         auth.currentUser?.let { user ->
             _uiState.value = AuthUiState.Success(user.email ?: "", user.uid)
@@ -38,7 +38,7 @@ class AuthViewModel : ViewModel() {
                 val user = result.user
 
                 if (user != null) {
-                    // ✅ Retourner l'email ET l'ID utilisateur
+
                     _uiState.value = AuthUiState.Success(user.email ?: email, user.uid)
                 } else {
                     _uiState.value = AuthUiState.Error("Connexion échouée")

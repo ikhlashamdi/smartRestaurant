@@ -1,6 +1,12 @@
-package com.example.smartshop.data
+package com.example.smartshop.data.local.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Update
+import com.example.smartshop.data.local.entity.CartItem
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -11,7 +17,7 @@ interface CartDao {
     @Query("SELECT * FROM cart_items WHERE productId = :productId AND userId = :userId LIMIT 1")
     suspend fun getCartItemByProduct(productId: String, userId: String): CartItem?
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
     suspend fun insertCartItem(item: CartItem)
 
     @Update

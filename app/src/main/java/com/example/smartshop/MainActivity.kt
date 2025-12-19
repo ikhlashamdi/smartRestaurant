@@ -12,9 +12,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.smartshop.ViewModel.CartViewModel
 import com.example.smartshop.ViewModel.ProductViewModel
 import com.example.smartshop.auth.AuthUiState
-import com.example.smartshop.auth.AuthViewModel
-import com.example.smartshop.uiLayer.LoginScreen
-import com.example.smartshop.uiLayer.MainAppScreen
+import com.example.smartshop.ViewModel.AuthViewModel
+import com.example.smartshop.screen.LoginScreen
+import com.example.smartshop.screen.MainAppScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

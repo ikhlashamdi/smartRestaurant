@@ -1,4 +1,4 @@
-package com.example.smartshop.uiLayer
+package com.example.smartshop.screen
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -8,7 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import com.example.smartshop.ViewModel.CartViewModel
 import com.example.smartshop.ViewModel.ProductViewModel
-import com.example.smartshop.data.Product
+import com.example.smartshop.data.local.entity.Product
 import androidx.compose.foundation.Image
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -37,7 +37,7 @@ fun MainAppScreen(
     val cartItems by cartViewModel.cartItems.collectAsState()
     val cartItemCount = cartItems.size
 
-    // Snackbar pour confirmer l'ajout au panier
+
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(showAddedToCartSnackbar) {
@@ -60,7 +60,7 @@ fun MainAppScreen(
                             )
                         },
                         actions = {
-                            // Badge du panier
+
                             BadgedBox(
                                 badge = {
                                     if (cartItemCount > 0) {
@@ -83,7 +83,7 @@ fun MainAppScreen(
                         }
                     )
 
-                    else -> {} // Les autres écrans ont leur propre TopBar
+                    else -> {}
             }
         },
         floatingActionButton = {
@@ -126,7 +126,7 @@ fun MainAppScreen(
             }
         }
 
-        // Dialogue pour ajouter/modifier un produit
+
         if (showAddDialog) {
             AlertDialog(
                 onDismissRequest = {

@@ -1,7 +1,12 @@
-package com.example.smartshop.data
+package com.example.smartshop.data.repository
 
 import android.content.Context
+import com.example.smartshop.data.local.dao.ProductDao
+import com.example.smartshop.data.local.database.AppDatabase
+import com.example.smartshop.data.local.entity.Product
+import com.example.smartshop.data.remote.FirestoreService
 import kotlinx.coroutines.flow.Flow
+import java.util.UUID
 
 class ProductRepository private constructor(
     private val productDao: ProductDao,
@@ -15,7 +20,7 @@ class ProductRepository private constructor(
         fun getInstance(context: Context): ProductRepository {
             return INSTANCE ?: synchronized(this) {
                 val instance = ProductRepository(
-                    AppDatabase.getDatabase(context).productDao(),
+                    AppDatabase.Companion.getDatabase(context).productDao(),
                     context
                 )
                 INSTANCE = instance
@@ -37,7 +42,7 @@ class ProductRepository private constructor(
             throw IllegalArgumentException("Données invalides")
         }
         val newProduct = product.copy(
-            id = if (product.id.isEmpty()) java.util.UUID.randomUUID().toString() else product.id
+            id = if (product.id.isEmpty()) UUID.randomUUID().toString() else product.id
         )
         productDao.insertProduct(newProduct)
         FirestoreService.saveProduct(newProduct, newProduct.userId)
@@ -56,7 +61,7 @@ class ProductRepository private constructor(
         FirestoreService.deleteProduct(product.id)
     }
 
-    // ✅ Méthode pour synchroniser depuis Firestore vers Room
+
     suspend fun syncProductFromFirestore(product: Product) {
         val existingProduct = productDao.getProductById(product.id)
 

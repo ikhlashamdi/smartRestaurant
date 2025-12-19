@@ -4,9 +4,9 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.smartshop.data.Product
-import com.example.smartshop.data.ProductRepository
-import com.example.smartshop.data.FirestoreService
+import com.example.smartshop.data.local.entity.Product
+import com.example.smartshop.data.repository.ProductRepository
+import com.example.smartshop.data.remote.FirestoreService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -39,13 +39,11 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
             }
         }
 
-        // ✅ 2. Écouter les changements Firestore en temps réel
         Log.d(TAG, "🔥 Démarrage de l'écoute Firestore pour userId: $userId")
         FirestoreService.listenToProducts(userId) { firestoreProducts ->
             Log.d(TAG, "🔥 Callback Firestore reçu: ${firestoreProducts.size} produit(s)")
 
             viewModelScope.launch {
-                // Synchroniser les produits Firestore vers Room
                 firestoreProducts.forEach { product ->
                     try {
                         Log.d(TAG, "🔄 Synchronisation: ${product.name} (${product.id})")

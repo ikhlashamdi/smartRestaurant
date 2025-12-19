@@ -1,4 +1,4 @@
-package com.example.smartshop.uiLayer
+package com.example.smartshop.screen
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.smartshop.auth.AuthUiState
-import com.example.smartshop.auth.AuthViewModel
+import com.example.smartshop.ViewModel.AuthViewModel
 
 @Composable
 fun LoginScreen(viewModel: AuthViewModel) {
@@ -80,7 +80,7 @@ fun LoginScreen(viewModel: AuthViewModel) {
 
         Spacer(Modifier.height(16.dp))
 
-        // ✅ Affichage des erreurs
+
         if (uiState is AuthUiState.Error) {
             Card(
                 colors = CardDefaults.cardColors(

@@ -1,5 +1,6 @@
-package com.example.smartshop.data
+package com.example.smartshop.data.remote
 
+import com.example.smartshop.data.local.entity.Product
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 

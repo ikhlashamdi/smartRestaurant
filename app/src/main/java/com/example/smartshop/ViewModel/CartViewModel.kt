@@ -4,10 +4,10 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.smartshop.data.CartItem
-import com.example.smartshop.data.CartRepository
-import com.example.smartshop.data.Order
-import com.example.smartshop.data.Product
+import com.example.smartshop.data.local.entity.CartItem
+import com.example.smartshop.data.repository.CartRepository
+import com.example.smartshop.data.local.entity.Order
+import com.example.smartshop.data.local.entity.Product
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -44,7 +44,7 @@ class CartViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
 
-        // Observer les commandes
+
         viewModelScope.launch {
             repository.getOrders(userId).collect { orders ->
                 _orders.value = orders

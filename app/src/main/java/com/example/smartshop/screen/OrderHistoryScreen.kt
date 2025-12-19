@@ -1,4 +1,4 @@
-package com.example.smartshop.uiLayer
+package com.example.smartshop.screen
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.smartshop.ViewModel.CartViewModel
-import com.example.smartshop.data.Order
-import com.example.smartshop.data.OrderItem
+import com.example.smartshop.data.local.entity.Order
+import com.example.smartshop.data.local.entity.OrderItem
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.text.NumberFormat
@@ -103,7 +103,7 @@ fun OrderCard(
     var showStatusDialog by remember { mutableStateOf(false) }
     var showDeleteDialog by remember { mutableStateOf(false) }
 
-    // Décoder les items de la commande
+
     val orderItems: List<OrderItem> = try {
         val type = object : TypeToken<List<OrderItem>>() {}.type
         Gson().fromJson(order.items, type)
@@ -111,7 +111,7 @@ fun OrderCard(
         emptyList()
     }
 
-    // Formater la date
+
     val dateFormat = SimpleDateFormat("dd/MM/yyyy à HH:mm", Locale.FRANCE)
     val dateString = dateFormat.format(Date(order.orderDate))
 
@@ -157,7 +157,7 @@ fun OrderCard(
 
             Spacer(Modifier.height(12.dp))
 
-            // Total
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -170,7 +170,7 @@ fun OrderCard(
                 )
             }
 
-            // Bouton pour voir les détails
+
             TextButton(
                 onClick = { expanded = !expanded },
                 modifier = Modifier.align(Alignment.End)
@@ -182,7 +182,7 @@ fun OrderCard(
                 )
             }
 
-            // Détails de la commande
+
             if (expanded) {
                 Divider()
                 Spacer(Modifier.height(8.dp))
@@ -203,7 +203,7 @@ fun OrderCard(
 
                 Spacer(Modifier.height(8.dp))
 
-                // Bouton supprimer
+
                 OutlinedButton(
                     onClick = { showDeleteDialog = true },
                     colors = ButtonDefaults.outlinedButtonColors(
@@ -219,7 +219,7 @@ fun OrderCard(
         }
     }
 
-    // Dialogue de changement de statut
+
     if (showStatusDialog) {
         AlertDialog(
             onDismissRequest = { showStatusDialog = false },
@@ -248,7 +248,7 @@ fun OrderCard(
         )
     }
 
-    // Dialogue de confirmation de suppression
+
     if (showDeleteDialog) {
         AlertDialog(
             onDismissRequest = { showDeleteDialog = false },

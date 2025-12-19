@@ -1,10 +1,18 @@
-package com.example.smartshop.data
-
+package com.example.smartshop.data.repository
 
 import android.content.Context
 import android.util.Log
+import com.example.smartshop.data.local.dao.CartDao
+import com.example.smartshop.data.local.dao.OrderDao
+import com.example.smartshop.data.local.dao.ProductDao
+import com.example.smartshop.data.local.database.AppDatabase
+import com.example.smartshop.data.local.entity.CartItem
+import com.example.smartshop.data.local.entity.Order
+import com.example.smartshop.data.local.entity.OrderItem
+import com.example.smartshop.data.local.entity.Product
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
+import java.util.UUID
 
 class CartRepository private constructor(
     private val cartDao: CartDao,
@@ -20,7 +28,7 @@ class CartRepository private constructor(
 
         fun getInstance(context: Context): CartRepository {
             return INSTANCE ?: synchronized(this) {
-                val db = AppDatabase.getDatabase(context)
+                val db = AppDatabase.Companion.getDatabase(context)
                 val instance = CartRepository(
                     db.cartDao(),
                     db.orderDao(),
@@ -32,7 +40,7 @@ class CartRepository private constructor(
         }
     }
 
-    // ===== PANIER =====
+
 
     fun getCartItems(userId: String): Flow<List<CartItem>> {
         return cartDao.getCartItems(userId)
@@ -41,19 +49,19 @@ class CartRepository private constructor(
     suspend fun addToCart(product: Product, userId: String, quantity: Int = 1) {
         Log.d(TAG, "Ajout au panier: ${product.name} x$quantity")
 
-        // Vérifier si le produit est déjà dans le panier
+
         val existingItem = cartDao.getCartItemByProduct(product.id, userId)
 
         if (existingItem != null) {
-            // Mettre à jour la quantité
+
             val updatedItem = existingItem.copy(
                 quantity = existingItem.quantity + quantity
             )
             cartDao.updateCartItem(updatedItem)
         } else {
-            // Ajouter un nouvel item
+
             val cartItem = CartItem(
-                id = java.util.UUID.randomUUID().toString(),
+                id = UUID.randomUUID().toString(),
                 productId = product.id,
                 productName = product.name,
                 productPrice = product.price,
@@ -84,7 +92,7 @@ class CartRepository private constructor(
         return cartDao.getCartTotal(userId) ?: 0.0
     }
 
-    // ===== COMMANDES =====
+
 
     fun getOrders(userId: String): Flow<List<Order>> {
         return orderDao.getOrders(userId)
@@ -93,17 +101,17 @@ class CartRepository private constructor(
     suspend fun createOrder(userId: String, cartItems: List<CartItem>): Order {
         Log.d(TAG, "Création commande pour ${cartItems.size} articles")
 
-        // Convertir les items du panier en OrderItems
+
         val orderItems = cartItems.map {
             OrderItem(it.productName, it.quantity, it.productPrice)
         }
 
-        // Calculer le total
+
         val total = cartItems.sumOf { it.getTotalPrice() }
 
-        // Créer la commande
+
         val order = Order(
-            id = java.util.UUID.randomUUID().toString(),
+            id = UUID.randomUUID().toString(),
             userId = userId,
             items = Gson().toJson(orderItems),
             totalAmount = total,
@@ -111,10 +119,10 @@ class CartRepository private constructor(
             status = "En cours"
         )
 
-        // Sauvegarder la commande
+
         orderDao.insertOrder(order)
 
-        // Mettre à jour les stocks des produits
+
         cartItems.forEach { cartItem ->
             val product = productDao.getProductById(cartItem.productId)
             if (product != null) {
@@ -127,7 +135,7 @@ class CartRepository private constructor(
             }
         }
 
-        // Vider le panier
+
         clearCart(userId)
 
         Log.d(TAG, "Commande créée avec succès: ${order.id}")

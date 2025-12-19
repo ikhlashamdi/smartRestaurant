@@ -1,9 +1,15 @@
-package com.example.smartshop.data
+package com.example.smartshop.data.local.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.smartshop.data.local.dao.CartDao
+import com.example.smartshop.data.local.dao.OrderDao
+import com.example.smartshop.data.local.dao.ProductDao
+import com.example.smartshop.data.local.entity.CartItem
+import com.example.smartshop.data.local.entity.Order
+import com.example.smartshop.data.local.entity.Product
 
 @Database(
     entities = [
@@ -11,13 +17,13 @@ import androidx.room.RoomDatabase
         CartItem::class,
         Order::class
     ],
-    version = 3, // ✅ Increment version number
+    version = 3,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun productDao(): ProductDao
-    abstract fun cartDao(): CartDao // ✅ Add CartDao
-    abstract fun orderDao(): OrderDao // ✅ Add OrderDao
+    abstract fun cartDao(): CartDao
+    abstract fun orderDao(): OrderDao
 
     companion object {
         @Volatile
@@ -30,7 +36,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "smartshop_db"
                 )
-                    .fallbackToDestructiveMigration() // ✅ Recreate DB on version change
+                    .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance
                 instance

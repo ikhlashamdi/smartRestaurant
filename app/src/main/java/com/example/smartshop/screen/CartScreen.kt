@@ -1,4 +1,4 @@
-package com.example.smartshop.uiLayer
+package com.example.smartshop.screen
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.smartshop.ViewModel.CartViewModel
-import com.example.smartshop.data.CartItem
+import com.example.smartshop.data.local.entity.CartItem
 import java.text.NumberFormat
 import java.util.*
 import androidx.compose.material.icons.filled.CheckCircle
@@ -29,7 +29,7 @@ fun CartScreen(
     val orderCreated by viewModel.orderCreated.collectAsState()
     var showOrderDialog by remember { mutableStateOf(false) }
 
-    // Afficher un message quand la commande est créée
+
     LaunchedEffect(orderCreated) {
         if (orderCreated) {
             showOrderDialog = true
@@ -61,7 +61,7 @@ fun CartScreen(
                 .padding(padding)
         ) {
             if (cartItems.isEmpty()) {
-                // Panier vide
+
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
@@ -85,7 +85,7 @@ fun CartScreen(
                     }
                 }
             } else {
-                // Liste des articles
+
                 LazyColumn(
                     modifier = Modifier
                         .weight(1f)
@@ -104,7 +104,7 @@ fun CartScreen(
                     }
                 }
 
-                // Résumé et bouton commander
+
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -150,7 +150,6 @@ fun CartScreen(
             }
         }
 
-        // Dialogue de confirmation
         if (showOrderDialog) {
             AlertDialog(
                 onDismissRequest = {
@@ -219,7 +218,7 @@ fun CartItemCard(
                 )
             }
 
-            // Contrôles de quantité
+
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp)

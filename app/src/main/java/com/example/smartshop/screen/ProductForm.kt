@@ -1,4 +1,4 @@
-package com.example.smartshop.uiLayer
+package com.example.smartshop.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.smartshop.data.Product
+import com.example.smartshop.data.local.entity.Product
 
 @Composable
 fun ProductFormWithUrl(
@@ -37,7 +37,7 @@ fun ProductFormWithUrl(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        // Aperçu de l'image
+
         if (imageUrl.isNotEmpty()) {
             Box(
                 modifier = Modifier
@@ -56,13 +56,13 @@ fun ProductFormWithUrl(
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop,
                     onError = {
-                        // Afficher icône si erreur de chargement
+
                     }
                 )
             }
         }
 
-        // Champ URL de l'image
+
         OutlinedTextField(
             value = imageUrl,
             onValueChange = { imageUrl = it },

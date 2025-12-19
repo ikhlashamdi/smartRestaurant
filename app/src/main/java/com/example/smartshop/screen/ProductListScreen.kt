@@ -1,4 +1,4 @@
-package com.example.smartshop.uiLayer
+package com.example.smartshop.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -24,7 +24,7 @@ import androidx.core.text.isDigitsOnly
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.smartshop.ViewModel.ProductViewModel
-import com.example.smartshop.data.Product
+import com.example.smartshop.data.local.entity.Product
 import java.text.NumberFormat
 import java.util.*
 
@@ -40,9 +40,9 @@ fun ProductListScreen(
 
     LazyColumn(
         modifier = modifier.fillMaxSize(),
-        contentPadding = PaddingValues(bottom = 80.dp) // Espace pour le FAB
+        contentPadding = PaddingValues(bottom = 80.dp)
     ) {
-        // Statistiques
+
         item {
             Card(
                 modifier = Modifier
@@ -72,7 +72,6 @@ fun ProductListScreen(
             }
         }
 
-        // Message si vide
         if (products.isEmpty()) {
             item {
                 Box(
@@ -93,7 +92,6 @@ fun ProductListScreen(
             }
         }
 
-        // Liste des produits avec padding horizontal
         items(products, key = { it.id }) { product ->
             Box(modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)) {
                 ProductItemWithImage(
@@ -136,7 +134,7 @@ fun StatsCard(totalProducts: Int, totalValue: Double) {
     }
 }
 
-// ✅ NOUVELLE VERSION avec image
+
 @Composable
 fun ProductItemWithImage(
     product: Product,
@@ -158,7 +156,7 @@ fun ProductItemWithImage(
                 .padding(12.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            // 📸 Image du produit
+
             Box(
                 modifier = Modifier
                     .size(80.dp)
@@ -186,7 +184,7 @@ fun ProductItemWithImage(
                 }
             }
 
-            // Informations du produit
+
             Column(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(4.dp)
@@ -218,13 +216,12 @@ fun ProductItemWithImage(
                 }
             }
 
-            // Boutons d'action
             Column(
                 verticalArrangement = Arrangement.spacedBy(4.dp),
                 horizontalAlignment = Alignment.End
             ) {
                 Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                    // 🛒 Panier
+
                     IconButton(
                         onClick = onAddToCart,
                         enabled = product.quantity > 0,
@@ -241,7 +238,7 @@ fun ProductItemWithImage(
                         )
                     }
 
-                    // ✏️ Modifier
+
                     IconButton(
                         onClick = onClick,
                         modifier = Modifier.size(36.dp)
@@ -255,7 +252,7 @@ fun ProductItemWithImage(
                     }
                 }
 
-                // 🗑️ Supprimer
+
                 IconButton(
                     onClick = { showDeleteDialog = true },
                     modifier = Modifier.size(36.dp)
@@ -296,7 +293,7 @@ fun ProductItemWithImage(
 }
 
 
-// ✅ ProductFormInDialog
+
 @Composable
 fun ProductFormInDialog(
     product: Product? = null,
@@ -340,7 +337,7 @@ fun ProductFormInDialog(
                     price = text
                 }
             },
-            label = { Text("Prix (€)") },
+            label = { Text("Prix (Dt)") },
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )

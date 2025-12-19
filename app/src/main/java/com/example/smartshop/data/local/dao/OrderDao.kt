@@ -1,6 +1,12 @@
-package com.example.smartshop.data
+package com.example.smartshop.data.local.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Update
+import com.example.smartshop.data.local.entity.Order
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -11,7 +17,7 @@ interface OrderDao {
     @Query("SELECT * FROM orders WHERE id = :orderId LIMIT 1")
     suspend fun getOrderById(orderId: String): Order?
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
     suspend fun insertOrder(order: Order)
 
     @Update
